@@ -1,73 +1,81 @@
-let bulbs = document.querySelectorAll('div.bulb');
-let i = 0;
-let offtime, flag = false, id, abort = false, running = false;
-let display = document.querySelector('#time-diff');
+let bulbs = document.querySelectorAll('div.bulb')
+let i = 0
+let offtime,
+  flag = false,
+  id,
+  abort = false,
+  running = false
+let display = document.querySelector('#time-diff')
 
-function switchL(i) {
-  let color = bulbs[i].style.backgroundColor;
-  bulbs[i].style.backgroundColor = color === 'red' ? '#591212' : 'red';
-  bulbs[i + 1].style.backgroundColor = color === 'red' ? '#591212' : 'red';
+function switchL (i) {
+  let color = bulbs[i].style.backgroundColor
+  bulbs[i].style.backgroundColor = color === 'red' ? '#591212' : 'red'
+  bulbs[i + 1].style.backgroundColor = color === 'red' ? '#591212' : 'red'
 }
 
-function pseudoStart() {
-  if(running) return
+function pseudoStart () {
+  if (running) return
   running = true
   start()
 }
 
-function start() {
-  display.value = '';
-  flag = false;
-  
+function start () {
+  display.value = ''
+  flag = false
+
   if (abort) {
-    clearInterval(id);
-    abort = false;
-    i = 0;
+    clearInterval(id)
+    abort = false
+    i = 0
   }
 
   if (i < bulbs.length && i + 1 < bulbs.length) {
-    switchL(i);
+    switchL(i)
   }
-  
-  i += 2;
+
+  i += 2
 
   if (i >= bulbs.length) {
     id = setTimeout(() => {
-      const randomDelay = Math.floor(Math.random() * (3000 - 200 + 1)) + 200;
-      setTimeout(reset, randomDelay);
-    }, 1000);
-    i = 0;
-    return;
+      const randomDelay = Math.floor(Math.random() * (3000 - 200 + 1)) + 200
+      setTimeout(reset, randomDelay)
+    }, 1000)
+    i = 0
+    return
   }
-  
-  setTimeout(start, 1000);
+
+  setTimeout(start, 1000)
 }
 
-function reset(bool = true) {
-  clearTimeout(id);
-  
+function reset (bool = true) {
   for (let d of bulbs) {
-    d.style.backgroundColor = '#591212';
+    d.style.backgroundColor = '#591212'
   }
-  
+
   if (bool) {
-    offtime = new Date();
-    flag = true;
+    offtime = new Date()
+    flag = true
   }
+
   i = 0
+  running = false // Ensure running is set to false
 }
 
-function record() {
+function record () {
   if (flag) {
-    const recTime = new Date();
-    const diff = (recTime - offtime) / 1000;
-    const res = diff.toFixed(3);
-    
-    if (!isNaN(res)) display.value = res;
-    flag = false;
+    const recTime = new Date()
+    const diff = (recTime - offtime) / 1000
+    const res = diff.toFixed(3)
+
+    if (!isNaN(res)) display.value = res
+    flag = false
     running = false
   } else {
-    reset(false);
-    abort = true;
+    abort = true
+    reset(false)
+    if (i >= bulbs.length) {
+      running = false
+      pseudoStart()
+    }
   }
 }
