@@ -11,8 +11,8 @@ function switchL(i) {
 
 function pseudoStart() {
   if(running) return
-  start()
   running = true
+  start()
 }
 
 function start() {
@@ -54,7 +54,6 @@ function reset(bool = true) {
     offtime = new Date();
     flag = true;
   }
-  running = false
   i = 0
 }
 
@@ -66,6 +65,7 @@ function record() {
     
     if (!isNaN(res)) display.value = res;
     flag = false;
+    running = false
   } else {
     reset(false);
     abort = true;
