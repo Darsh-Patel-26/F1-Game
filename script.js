@@ -55,6 +55,7 @@ function reset(bool = true) {
     flag = true;
   }
   running = false
+  i = 0
 }
 
 function record() {
