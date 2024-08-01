@@ -1,12 +1,18 @@
 let bulbs = document.querySelectorAll('div.bulb');
 let i = 0;
-let offtime, flag = false, id, abort = false;
+let offtime, flag = false, id, abort = false, running = false;
 let display = document.querySelector('#time-diff');
 
 function switchL(i) {
   let color = bulbs[i].style.backgroundColor;
   bulbs[i].style.backgroundColor = color === 'red' ? '#591212' : 'red';
   bulbs[i + 1].style.backgroundColor = color === 'red' ? '#591212' : 'red';
+}
+
+function pseudoStart() {
+  if(running) return
+  start()
+  running = true
 }
 
 function start() {
@@ -48,6 +54,7 @@ function reset(bool = true) {
     offtime = new Date();
     flag = true;
   }
+  running = false
 }
 
 function record() {
